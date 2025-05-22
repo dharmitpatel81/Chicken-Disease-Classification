@@ -4,8 +4,10 @@ from chicken_disease_classification.entity.config_entity import (
     DataIngestionConfig,
     PrepareBaseModelConfig,
     PrepareCallbacksConfig,
-    TrainingConfig)
+    TrainingConfig,
+    EvaluationConfig)
 import os
+from pathlib import Path
 
 
 class ConfigurationManager:
@@ -87,3 +89,13 @@ class ConfigurationManager:
         )
 
         return training_config
+    
+    def get_validation_config(self) -> EvaluationConfig:
+        eval_config = EvaluationConfig(
+            path_of_model=Path("artifacts/training/model.keras"),
+            training_data=Path("artifacts/data_ingestion/Chicken-fecal-images"),
+            all_params=self.params,
+            params_image_size=self.params.IMAGE_SIZE,
+            params_batch_size=self.params.BATCH_SIZE
+        )
+        return eval_config
