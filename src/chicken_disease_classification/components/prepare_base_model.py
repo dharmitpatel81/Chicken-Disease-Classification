@@ -1,6 +1,3 @@
-import os
-import urllib.request as request
-from zipfile import ZipFile
 import tensorflow as tf
 from chicken_disease_classification.entity.config_entity import PrepareBaseModelConfig
 from pathlib import Path
