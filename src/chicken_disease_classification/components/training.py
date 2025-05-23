@@ -33,6 +33,8 @@ class Training:
             interpolation="bilinear"                         # Interpolation used for resizing
         )
 
+        print("DEBUG: Directory passed to flow_from_directory:", self.config.training_data)
+
         # Validation generator without augmentation
         valid_datagenerator = tf.keras.preprocessing.image.ImageDataGenerator(
             **datagenerator_kwargs
@@ -69,23 +71,21 @@ class Training:
             **dataflow_kwargs
         )
 
+        print(f"Train generator found: {self.train_generator.samples} images")
+        print(f"Validation generator found: {self.valid_generator.samples} images")
+        print(f"Class indices: {self.train_generator.class_indices}")
+
     @staticmethod
     def save_model(path: Path, model: tf.keras.Model):
         # Save the complete model (architecture + weights)
         model.save(path)
 
     def train(self, callback_list: list):
-        
-        # Calculate the number of batches per epoch for both training and validation
-        self.steps_per_epoch = self.train_generator.samples // self.train_generator.batch_size
-        self.validation_steps = self.valid_generator.samples // self.valid_generator.batch_size
 
         # Train the model using the generators and provided callbacks
         self.model.fit(
             self.train_generator,                   # Training generator
             epochs=self.config.params_epochs,       # Total number of epochs to train
-            steps_per_epoch=self.steps_per_epoch,   # How many batches per epoch
-            validation_steps=self.validation_steps, # Validation steps per epoch
             validation_data=self.valid_generator,   # Validation generator
             callbacks=callback_list                 # List of Keras callbacks (e.g., early stopping)
         )

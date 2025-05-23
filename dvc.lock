@@ -5,8 +5,8 @@ stages:
     deps:
     - path: config/config.yaml
       hash: md5
-      md5: 7db7ea608c55413fd2326cee66db6292
-      size: 810
+      md5: de34ee545c28984f2a03eb98a83a32eb
+      size: 826
     - path: src/chicken_disease_classification/pipeline/stage_01_data_ingestion.py
       hash: md5
       md5: fc9499e9fa83ab9cac18eff1a638b979
@@ -14,16 +14,16 @@ stages:
     outs:
     - path: artifacts/data_ingestion/Chicken-fecal-images
       hash: md5
-      md5: 9e1f8dd2eae3c29e9d635df89d438ae4.dir
-      size: 12207807
-      nfiles: 390
+      md5: 67aff02745869de433f867bd441e6129.dir
+      size: 131937314
+      nfiles: 4160
   prepare_base_model:
     cmd: python src/chicken_disease_classification/pipeline/stage_02_prepare_base_model.py
     deps:
     - path: config/config.yaml
       hash: md5
-      md5: 7db7ea608c55413fd2326cee66db6292
-      size: 810
+      md5: de34ee545c28984f2a03eb98a83a32eb
+      size: 826
     - path: src/chicken_disease_classification/pipeline/stage_02_prepare_base_model.py
       hash: md5
       md5: 34563f8f82ddcafb9487d7ed0af1ed78
@@ -36,31 +36,31 @@ stages:
         - 224
         - 3
         INCLUDE_TOP: false
-        LEARNING_RATE: 0.01
+        LEARNING_RATE: 0.001
         WEIGHTS: imagenet
     outs:
     - path: artifacts/prepare_base_model
       hash: md5
-      md5: db0fa41d1358aef7bf3e9dc0bf92fd30.dir
-      size: 117972843
+      md5: 99b7c390811061da9565cb721e918688.dir
+      size: 117972844
       nfiles: 2
   training:
     cmd: python src/chicken_disease_classification/pipeline/stage_03_training.py
     deps:
     - path: artifacts/data_ingestion/Chicken-fecal-images
       hash: md5
-      md5: 9e1f8dd2eae3c29e9d635df89d438ae4.dir
-      size: 12207807
-      nfiles: 390
+      md5: 67aff02745869de433f867bd441e6129.dir
+      size: 131937314
+      nfiles: 4160
     - path: artifacts/prepare_base_model
       hash: md5
-      md5: db0fa41d1358aef7bf3e9dc0bf92fd30.dir
-      size: 117972843
+      md5: 99b7c390811061da9565cb721e918688.dir
+      size: 117972844
       nfiles: 2
     - path: config/config.yaml
       hash: md5
-      md5: 7db7ea608c55413fd2326cee66db6292
-      size: 810
+      md5: de34ee545c28984f2a03eb98a83a32eb
+      size: 826
     - path: src/chicken_disease_classification/components/prepare_callbacks.py
       hash: md5
       md5: 7e71fe352c2edd61386aa80e35b96c06
@@ -72,8 +72,8 @@ stages:
     params:
       params.yaml:
         AUGMENTATION: true
-        BATCH_SIZE: 16
-        EPOCHS: 1
+        BATCH_SIZE: 64
+        EPOCHS: 10
         IMAGE_SIZE:
         - 224
         - 224
@@ -81,31 +81,31 @@ stages:
     outs:
     - path: artifacts/training/model.keras
       hash: md5
-      md5: 9a18a81b1aa75acb7f236d7dec368a48
+      md5: d8ddbe8438f8b5106e6ebac56c4493dc
       size: 59040680
   evaluation:
     cmd: python src/chicken_disease_classification/pipeline/stage_04_evaluation.py
     deps:
     - path: artifacts/data_ingestion/Chicken-fecal-images
       hash: md5
-      md5: 9e1f8dd2eae3c29e9d635df89d438ae4.dir
-      size: 12207807
-      nfiles: 390
+      md5: 67aff02745869de433f867bd441e6129.dir
+      size: 131937314
+      nfiles: 4160
     - path: artifacts/training/model.keras
       hash: md5
-      md5: 9a18a81b1aa75acb7f236d7dec368a48
+      md5: d8ddbe8438f8b5106e6ebac56c4493dc
       size: 59040680
     - path: config/config.yaml
       hash: md5
-      md5: 7db7ea608c55413fd2326cee66db6292
-      size: 810
+      md5: de34ee545c28984f2a03eb98a83a32eb
+      size: 826
     - path: src/chicken_disease_classification/pipeline/stage_04_evaluation.py
       hash: md5
       md5: 50f05559a2b5f473aa99af08d8960df7
       size: 910
     params:
       params.yaml:
-        BATCH_SIZE: 16
+        BATCH_SIZE: 64
         IMAGE_SIZE:
         - 224
         - 224
@@ -113,5 +113,5 @@ stages:
     outs:
     - path: scores.json
       hash: md5
-      md5: 37162682432a822aa1f3f8caf5dcb72a
-      size: 57
+      md5: 1f91a2a8cc9fecaf05abceaea3b4ce4c
+      size: 73
