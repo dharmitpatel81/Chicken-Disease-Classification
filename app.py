@@ -8,7 +8,7 @@ os.putenv("LANG", "en_US.UTF-8")
 os.putenv("LC_ALL", "en_US.UTF-8")
 
 app = Flask(__name__)
-CORS(app)
+CORS(app)   
 
 class ClientApp:
     def __init__(self):
@@ -16,7 +16,7 @@ class ClientApp:
         self.classifier = PredictionPipeline(self.filename)
 
 
-@app.route("/", methods=["GET"])
+@app.route("/", methods=["GET"])    
 @cross_origin()
 def home():
     return render_template("index.html")
